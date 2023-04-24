@@ -12,11 +12,7 @@ async function connectRabbitMQ() {
 
     const channel = await connection.createChannel();
     await channel.assertQueue(queue);
-    await channel.sendToQueue(queue, new Buffer("Hello, Anonystick!"),
-      {
-        // RabbitMQ - Khi khởi động lại, tiếp tục chạy
-        persistent: true
-      });
+    await channel.sendToQueue(queue, Buffer.from('first time rabbit 2'));
 
     connection.on("error", function (err) {
       console.log(err);

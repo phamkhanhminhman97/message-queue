@@ -5,14 +5,15 @@ const queue = "demo";
 var connection;
 
 //  Connect RabbitMQ
-async function connectRabbitMQ() {
+async function consumer() {
   try {
     connection = await amqp.connect("amqp://localhost");
-    console.info("connect to RabbitMQ success");
+    console.info("receiver connect to RabbitMQ success");
 
     const channel = await connection.createChannel();
     await channel.assertQueue(queue);
     await channel.consume(queue, async function (message) {
+      console.log('==============');
       console.log(message.content.toString());
       channel.ack(message);
     });
@@ -33,4 +34,4 @@ async function connectRabbitMQ() {
     setTimeout(connectRabbitMQ, 10000);
   }
 }
-connectRabbitMQ();
+consumer();
