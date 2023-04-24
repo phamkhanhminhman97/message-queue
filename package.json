@@ -1,0 +1,22 @@
+{
+  "name": "message-queue",
+  "version": "1.0.0",
+  "description": "",
+  "main": "receive.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phamkhanhminhman97/message-queue.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phamkhanhminhman97/message-queue/issues"
+  },
+  "homepage": "https://github.com/phamkhanhminhman97/message-queue#readme",
+  "dependencies": {
+    "amqplib": "^0.10.3"
+  }
+}
