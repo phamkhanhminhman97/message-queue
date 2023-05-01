@@ -1,6 +1,9 @@
 const amqp = require("amqplib");
 
 const queue = "demo";
+const queue2 = "demo2";
+const queue3 = "queue3";
+const axios = require("axios");
 
 var connection;
 
@@ -11,18 +14,9 @@ async function connectRabbitMQ() {
     console.info("connect to RabbitMQ success");
 
     const channel = await connection.createChannel();
-    await channel.assertQueue(queue);
-    await channel.sendToQueue(queue, Buffer.from('first time rabbit 2'));
 
-    connection.on("error", function (err) {
-      console.log(err);
-      setTimeout(connectRabbitMQ, 10000);
-    });
+    return channel;
 
-    connection.on("close", function () {
-      console.error("connection to RabbitQM closed!");
-      setTimeout(connectRabbitMQ, 10000);
-    });
 
   }
   catch (err) {
@@ -31,4 +25,25 @@ async function connectRabbitMQ() {
   }
 }
 
-connectRabbitMQ();
+async function test(count) {
+  let channel = await connectRabbitMQ();
+  let i = count;
+  setInterval(async () => {
+    let a = await axios.get('https://jsonplaceholder.typicode.com/todos/1')
+
+    a.data.userId = i++;
+    await channel.sendToQueue(queue, Buffer.from(JSON.stringify(a.data)));
+  }, 5000);
+}
+
+async function test2(count) {
+  let channel = await connectRabbitMQ();
+  let i = count;
+  setInterval(async () => {
+    let b = "ABC" + i++
+    await channel.sendToQueue(queue2, Buffer.from(b));
+  }, 5000);
+}
+
+test(999)
+test2(1234)
